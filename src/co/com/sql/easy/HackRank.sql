@@ -1,21 +1,21 @@
 -- Revising the Select Query I
-select * from city where population > 100000 and countrycode='USA';
+SELECT * FROM city WHERE population > 100000 and countrycode='USA';
 -- Revising the Select Query II
-select name from city where population > 120000 and countrycode='USA';
+SELECT name FROM city WHERE population > 120000 and countrycode='USA';
 -- Select All
-select * from city;
+SELECT * FROM city;
 -- Select By ID
-select * from city where id=1661;
+SELECT * FROM city WHERE id=1661;
 -- Japanese Cities' Attributes
-select * from city where countrycode='JPN';
+SELECT * FROM city WHERE countrycode='JPN';
 -- Japanese Cities' Names
-select name from city where countrycode='JPN';
+SELECT name FROM city WHERE countrycode='JPN';
 -- Weather Observation Station 1
-select city,state from station;
+SELECT city,state FROM station;
 -- Weather Observation Station 3
-select distinct city from station where MOD(ID,2)=0 ;
+SELECT DISTINCT city FROM station WHERE MOD(ID,2)=0 ;
 -- Weather Observation Station 4
-select count (city) - count(distinct city) from station;
+SELECT count (city) - count(DISTINCT city) FROM station;
 -- Weather Observation Station 5
 SELECT *
 FROM
@@ -55,12 +55,58 @@ SELECT CASE
 WHEN A + B > C THEN CASE WHEN A = B AND B = C THEN 'Equilateral' WHEN A = B OR B = C OR A = C THEN 'Isosceles' WHEN A != B OR B != C OR A != C THEN 'Scalene' END
 ELSE 'Not A Triangle' END FROM TRIANGLES
 -- Revising Aggregations - The Count Function
-select count(id) from CITY where population > 100000;
+SELECT count(id) FROM CITY WHERE population > 100000;
 -- Revising Aggregations - The Sum Function
-select sum(population) from CITY where district ='California';
+SELECT sum(population) FROM CITY WHERE district ='California';
 -- Revising Aggregations - Averages
-select avg(population) from CITY where district ='California';
+SELECT avg(population) FROM CITY WHERE district ='California';
 -- Average Population
-select ROUND(avg(population)) from CITY;
+SELECT ROUND(avg(population)) from CITY;
 -- Japan Population
-select sum(population) from CITY where countrycode ='JPN';
+SELECT sum(population) FROM CITY where countrycode ='JPN';
+-- Population Density Difference
+SELECT MAX(POPULATION) - MIN(POPULATION) FROM CITY
+-- The Blunder
+SELECT CEIL(AVG(Salary)-AVG(REPLACE(Salary,'0',''))) FROM EMPLOYEES;
+-- Top Earners
+SELECT salary * months AS earnings, COUNT(*)
+FROM Employee
+GROUP BY earnings
+ORDER BY earnings DESC
+LIMIT 1;
+-- Weather Observation Station 2
+SELECT ROUND(SUM(LAT_N), 2), ROUND(SUM(LONG_W), 2) FROM STATION;
+-- Weather Observation Station 13
+SELECT ROUND(SUM(Lat_N), 4)
+FROM STATION
+WHERE Lat_N > 38.7880 AND Lat_N < 137.2345;
+-- Weather Observation Station 14
+SELECT ROUND(MAX(Lat_N), 4)
+FROM Station
+WHERE Lat_N < 137.2345;
+-- Weather Observation Station 15
+Select ROUND(LONG_W,4) from STATION WHERE LAT_N = (SELECT MAX(LAT_N) FROM STATION WHERE LAT_N<137.2345);
+-- Weather Observation Station 16
+SELECT ROUND(MIN(Lat_N), 4)
+FROM Station
+WHERE Lat_N > 38.7780;
+-- Weather Observation Station 17
+SELECT round(LONG_W,4) FROM STATION WHERE LAT_N>38.7780 ORDER BY LAT_N limit 1;
+-- Population Census
+SELECT SUM(CITY.POPULATION) 
+FROM CITY, COUNTRY
+WHERE CITY.COUNTRYCODE = COUNTRY.CODE AND COUNTRY.CONTINENT = 'Asia';
+-- African Cities
+Select City.Name From City Inner Join Country 
+On CountryCode = Code
+Where Continent = 'Africa';
+-- Average Population of Each Continent
+SELECT COUNTRY.CONTINENT, FLOOR(AVG(CITY.POPULATION))
+FROM CITY INNER JOIN COUNTRY
+ON CITY.COUNTRYCODE = COUNTRY.CODE
+GROUP BY COUNTRY.CONTINENT;
+-- Draw The Triangle 1
+SELECT REPEAT('* ', @NUMBER := @NUMBER - 1) FROM information_schema.tables, (SELECT @NUMBER:=21) t LIMIT 20
+-- Draw The Triangle 2
+SET @row := 0;
+SELECT repeat('* ', @row := @row + 1) FROM information_schema.tables WHERE @row < 20

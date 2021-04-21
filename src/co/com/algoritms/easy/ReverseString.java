@@ -11,7 +11,7 @@ public class ReverseString {
 		String text = "foo(bar(baz))blim";
 
 		System.out.println(stringReverso(text));
-		String result = "	foobazrabblim";
+		String result = "foobazrabblim";
 	}
 
 	private static String stringReverso(String text) {
