@@ -20,7 +20,7 @@ public class ConcurrencyHistogram {
 	
 	/** Metodo encargado de realizar la agrupacion de numeros
 	 * @param array {@code int[]} arreglo de numeros
-	 * @param size {@code int} tamaño del histograma
+	 * @param size {@code int} tamaï¿½o del histograma
 	 * @since  JDK1.8
 	 * @author jsarria
 	 * @category Big-O(N)
